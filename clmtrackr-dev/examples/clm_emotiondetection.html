@@ -107,6 +107,8 @@
 
 			#emotion-text {
 				transition: ease 4s all;
+				font-variation-settings: 'SADD' 0, 'HAPP' 0, 'AGGR' 0;
+				font-size:60px;
 			}
 
 			#emotion-text.sad {
@@ -132,6 +134,10 @@
 				font-variation-settings: 'SADD' 100;
 				font-size:60px;
 			}
+
+			#container.hidden {
+                display: none;
+            }
 
 		</style>
 
@@ -178,7 +184,9 @@
 			<div id="controls">
 				<input class="btn" type="button" value="wait, loading video" disabled="disabled" onclick="startVideo()" id="startbutton"></input>
 			</div>
-			<div id="emotion-text" ></div
+			<div id="emotion-text" ></div>
+
+			<input type="button" id="hide-camera">Hide Camera</input>
 
 
 			<!-- <h1 id="emotion-text" class="happy">happy</h1>
@@ -197,6 +205,21 @@
 			
 			
 			<script>
+
+document.getElementById('hide-camera').onclick = () => {
+                    var container = document.getElementById('container');
+                    
+                    // If the container is already hidden
+                    if(container.classList.contains("hidden"))
+                    {
+                        container.classList.remove("hidden");
+                    }
+                    else
+                    {
+                        container.classList.add("hidden");
+                    }
+                }
+
 				var vid = document.getElementById('videoel');
 				var vid_width = vid.width;
 				var vid_height = vid.height;
@@ -293,6 +316,17 @@
 						var values = emotions.sort((a, b) => b.value - a.value);
 						var dominantEmotion = values[0];
 
+
+// ... but that score could be low...
+                        if(dominantEmotion.value > 0.5)
+                        {
+                            document.getElementById('emotion-text').className = dominantEmotion.emotion;
+                        }
+                        else
+                        {
+                            document.getElementById('emotion-text').className = '';
+						}
+						
 						document.getElementById('emotion-text').className = dominantEmotion.emotion;
 
 
@@ -412,7 +446,7 @@
                 t++;
             }
  
-            setInterval(changeText, 20000);
+            setInterval(changeText, 2000);
  
 		</script>
 		
